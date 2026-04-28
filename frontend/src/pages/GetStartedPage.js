@@ -53,6 +53,8 @@ const COUNTRY_CODES = [
   { name: "Brazil", code: "+55" }, { name: "Mexico", code: "+52" },
 ];
 
+const COUNTRY_OPTIONS = Array.from(new Set(COUNTRY_CODES.map((item) => item.name)));
+
 const STEPS_META = [
   { label: "Name", step: 1 }, { label: "Contact", step: 2 },
   { label: "Personal", step: 3 }, { label: "Location", step: 4 },
@@ -240,6 +242,11 @@ function FieldLabel({ label, required, error, children }) {
   );
 }
 
+function getCountryFromCode(code) {
+  const match = COUNTRY_CODES.find((item) => item.code === code);
+  return match ? match.name : "India";
+}
+
 // ── Main Page ──
 export default function GetStartedPage() {
   const navigate = useNavigate();
@@ -261,7 +268,11 @@ export default function GetStartedPage() {
   });
 
   const set = (key, val) => {
-    setForm((p) => ({ ...p, [key]: val }));
+    setForm((p) => ({
+      ...p,
+      [key]: val,
+      ...(key === "countryCode" ? { country: getCountryFromCode(val) } : {}),
+    }));
     setErrors((e) => ({ ...e, [key]: "" }));
   };
 
@@ -317,12 +328,10 @@ export default function GetStartedPage() {
           story: form.story,
         }),
       });
-      if (resp.ok) setStep(7);
-      // if (resp.ok) {
-      //   localStorage.setItem("rudra_name", form.fullName);
-      //   navigate("/thank-you");
-      // }
-      else {
+      if (resp.ok) {
+        localStorage.setItem("rudra_name", form.fullName);
+        navigate("/thankyou");
+      } else {
         const err = await resp.json().catch(() => ({}));
         alert(err.detail || "Something went wrong. Please try again.");
       }
@@ -495,8 +504,18 @@ export default function GetStartedPage() {
                       value={form.city} onChange={(e) => set("city", e.target.value)} />
                   </FieldLabel>
                   <FieldLabel label="Country">
-                    <input data-testid="gs-input-country" className={inputClass} placeholder="India"
-                      value={form.country} onChange={(e) => set("country", e.target.value)} />
+                    <select
+                      data-testid="gs-input-country"
+                      className={inputClass}
+                      value={form.country}
+                      onChange={(e) => set("country", e.target.value)}
+                    >
+                      {COUNTRY_OPTIONS.map((country) => (
+                        <option key={country} value={country}>
+                          {country}
+                        </option>
+                      ))}
+                    </select>
                   </FieldLabel>
                 </div>
               )}
