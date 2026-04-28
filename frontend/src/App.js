@@ -16,7 +16,7 @@ function ProtectedRoute({ children }) {
 
 function App() {
   return (
-    <BrowserRouter basename="/rudraksha-recommendation">
+    <BrowserRouter>
       <Routes>
         <Route path="/" element={<LandingPage />} />
         <Route path="/start" element={<GetStartedPage />} />
