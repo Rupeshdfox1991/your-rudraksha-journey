@@ -7,18 +7,19 @@ import {
 } from "lucide-react";
 
 const API_URL = process.env.REACT_APP_BACKEND_URL;
-const LOGO_URL = "https://customer-assets.emergentagent.com/job_spiritual-path-49/artifacts/it9ar00d_image.png";
-const HERO_MALA_IMG = "https://customer-assets.emergentagent.com/job_spiritual-path-49/artifacts/7pbng6g5_1920%20x%20720%20Indramala%20website%20Banner%20copy.jpg.jpeg";
-const WHATSAPP = "919820302028";
+const LOCAL_IMAGE_BASE = `${process.env.PUBLIC_URL}/images`;
+const LOGO_URL = `${LOCAL_IMAGE_BASE}/logo.png`;
+const HERO_MALA_IMG = `${LOCAL_IMAGE_BASE}/hero-banner.jpeg`;
+const WHATSAPP = "917208819922";
 
 const EXPERT_FACES = [
-  { name: "Dr. Tanay Seetha", img: "https://customer-assets.emergentagent.com/job_spiritual-path-49/artifacts/6qw0vi22_image.png" },
-  { name: "Hemlata Sojitra", img: "https://customer-assets.emergentagent.com/job_spiritual-path-49/artifacts/7n5ypemd_image.png" },
-  { name: "Saumil Seetha", img: "https://customer-assets.emergentagent.com/job_spiritual-path-49/artifacts/3ri80p5z_image.png" },
-  { name: "Shruti Sharma", img: "https://customer-assets.emergentagent.com/job_spiritual-path-49/artifacts/f6geckg9_image.png" },
-  { name: "Shilpa Agarwal", img: "https://customer-assets.emergentagent.com/job_spiritual-path-49/artifacts/8xlnt6uc_image.png" },
-  { name: "Madhulika", img: "https://customer-assets.emergentagent.com/job_spiritual-path-49/artifacts/f8rsnw1s_Madhulika.jpg.jpeg" },
-  { name: "Dhruv Sir", img: "https://customer-assets.emergentagent.com/job_spiritual-path-49/artifacts/fn5icn4z_Dhruv%20Sir.jpg.jpeg" },
+    { name: "Dr. Tanay Seetha", img: `${LOCAL_IMAGE_BASE}/speaker-1.png` },
+    { name: "Hemlata Sojitra", img: `${LOCAL_IMAGE_BASE}/speaker-2.png` },
+    { name: "Shruti Sharma", img: `${LOCAL_IMAGE_BASE}/speaker-5.jpg` },
+    { name: "Shilpa Agarwal", img: `${LOCAL_IMAGE_BASE}/speaker-3.jpg` },
+    { name: "Madhulika", img: `${LOCAL_IMAGE_BASE}/speaker-7.jpeg` },
+    { name: "Dhruv Sir", img: `${LOCAL_IMAGE_BASE}/speaker-6.jpeg` },
+    { name: "Saumil Seetha", img: `${LOCAL_IMAGE_BASE}/speaker-4.jpg` }
 ];
 
 const GOALS = [
@@ -122,7 +123,7 @@ function TrustPanel({ navigate }) {
 
         {/* Expert faces */}
         <div className="mb-7">
-          <p className="text-white/40 text-xs font-sans tracking-widest uppercase mb-3">Our Panel of 7 Experts</p>
+          <p className="text-white/40 text-xs font-sans tracking-widest uppercase mb-3">OUR PANEL EXPERTS AND OTHER'S</p>
           <div className="flex items-center gap-1.5 flex-wrap">
             {EXPERT_FACES.map((e, i) => (
               <div
@@ -144,7 +145,7 @@ function TrustPanel({ navigate }) {
         {/* Stats row */}
         <div className="grid grid-cols-2 gap-3 mb-7">
           {[
-            { num: "5,00,000+", label: "Believe Clients" },
+            { num: "5,00,000+", label: "Believer Clients" },
             { num: "25+", label: "Years Expertise" },
             { num: "52+", label: "Countries Served" },
             { num: "100%", label: "Lab Certified" },
@@ -161,7 +162,7 @@ function TrustPanel({ navigate }) {
           <p className="text-white/55 text-xs font-sans italic leading-relaxed">
             "Devotion to Rudraksha does not come without reason — you receive it only if it is in your destiny."
           </p>
-          <p className="text-[#C9A227]/60 text-xs font-sans mt-1">— Shiva Purana</p>
+          <p className="text-[#C9A227]/60 text-xs font-sans mt-1">— Shrimad Devi Bhagvatam</p>
         </div>
       </div>
     </div>
@@ -436,7 +437,7 @@ export default function GetStartedPage() {
             <div className="px-5 sm:px-7 pt-4">
               <div className="flex items-center gap-2 bg-green-50 border border-green-100 text-green-800 text-xs font-sans px-3.5 py-2.5 rounded-xl">
                 <Lock size={12} className="text-green-500 flex-shrink-0" />
-                <span><strong>We keep your information</strong> secure and completely confidential.</span>
+                <span>We are committed to protecting your data and maintaining your privacy.</span>
               </div>
             </div>
 

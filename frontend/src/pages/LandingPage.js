@@ -8,52 +8,46 @@ import {
 } from "lucide-react";
 
 // ── BASE URLS ──
-const RL = "https://rudralife.com/rudraksha-recommendation/images/";
-const LOGO_URL = "https://customer-assets.emergentagent.com/job_spiritual-path-49/artifacts/it9ar00d_image.png";
-const HERO_MALA_IMG = "https://customer-assets.emergentagent.com/job_spiritual-path-49/artifacts/7pbng6g5_1920%20x%20720%20Indramala%20website%20Banner%20copy.jpg.jpeg";
-const WHATSAPP_NUMBER = "919820302028";
+const LOCAL_IMAGE_BASE = `${process.env.PUBLIC_URL}/images`;
+const RL = `${LOCAL_IMAGE_BASE}/`;
+const LOGO_URL = `${LOCAL_IMAGE_BASE}/logo.png`;
+const HERO_MALA_IMG = `${LOCAL_IMAGE_BASE}/hero-banner.jpeg`;
+const WHATSAPP_NUMBER = "917208819922";
 
 // ── CONSTANTS ──
 const EXPERTS_DATA = [
   {
     name: "Dr. Tanay Seetha",
     title: "Founder of Rudralife",
-    img: "https://customer-assets.emergentagent.com/job_spiritual-path-49/artifacts/6qw0vi22_image.png",
+    img: `${LOCAL_IMAGE_BASE}/speaker-1.png`,
     desc: "Founder and visionary leader with 25+ years of expertise in Rudraksha research and spiritual guidance.",
     exp: "25+ Years",
   },
   {
     name: "Hemlata Sojitra",
     title: "Director – Operations / Head Panel",
-    img: "https://customer-assets.emergentagent.com/job_spiritual-path-49/artifacts/7n5ypemd_image.png",
+    img: `${LOCAL_IMAGE_BASE}/speaker-2.png`,
     desc: "Expert in operations and quality assurance, ensuring authenticity and excellence in every Rudraksha piece.",
     exp: "12+ Years",
   },
   {
-    name: "Saumil Seetha",
-    title: "Director & Head Panel Expert",
-    img: "https://customer-assets.emergentagent.com/job_spiritual-path-49/artifacts/3ri80p5z_image.png",
-    desc: "Leading expert in Vedic astrology and Rudraksha consultation with deep knowledge of ancient scriptures.",
-    exp: "15+ Years",
-  },
-  {
     name: "Shruti Sharma",
     title: "Senior Panel Expert",
-    img: "https://customer-assets.emergentagent.com/job_spiritual-path-49/artifacts/f6geckg9_image.png",
+    img: `${LOCAL_IMAGE_BASE}/speaker-5.jpg`,
     desc: "Senior consultant specializing in personalized Rudraksha recommendations based on individual spiritual needs.",
     exp: "10+ Years",
   },
   {
     name: "Shilpa Agarwal",
     title: "Panel Expert",
-    img: "https://customer-assets.emergentagent.com/job_spiritual-path-49/artifacts/8xlnt6uc_image.png",
+    img: `${LOCAL_IMAGE_BASE}/speaker-3.jpg`,
     desc: "Skilled panel expert with expertise in spiritual counseling and Rudraksha therapy for holistic well-being.",
     exp: "8+ Years",
   },
   {
     name: "Madhulika Namboodiri",
     title: "Senior Vedic Consultant",
-    img: "https://customer-assets.emergentagent.com/job_spiritual-path-49/artifacts/f8rsnw1s_Madhulika.jpg.jpeg",
+    img: `${LOCAL_IMAGE_BASE}/speaker-7.jpeg`,
     initials: "MN",
     desc: "Expert in Vedic sciences and ancient Indian scriptures, bringing deep scholarly knowledge to every consultation.",
     exp: "10+ Years",
@@ -61,10 +55,17 @@ const EXPERTS_DATA = [
   {
     name: "Dhruv Prakash Sinha",
     title: "Panel Expert & Spiritual Advisor",
-    img: "https://customer-assets.emergentagent.com/job_spiritual-path-49/artifacts/fn5icn4z_Dhruv%20Sir.jpg.jpeg",
+    img: `${LOCAL_IMAGE_BASE}/speaker-6.jpeg`,
     initials: "DP",
     desc: "Specialist in numerology and energy alignment with a holistic approach to spiritual well-being guidance.",
     exp: "7+ Years",
+  },
+  {
+    name: "Saumil Seetha",
+    title: "Director & Head Panel Expert",
+    img: `${LOCAL_IMAGE_BASE}/speaker-4.jpg`,
+    desc: "Leading expert in Vedic astrology and Rudraksha consultation with deep knowledge of ancient scriptures.",
+    exp: "15+ Years",
   },
 ];
 
@@ -73,7 +74,7 @@ const PRODUCTS = [
   { name: "Agya Chakra® in Gold (14 Mukhi)", benefit: "For Sharp Intuition & Decisive Clarity", img: `${RL}rudraksha/14-Mukhi-Rudraksha.jpg` },
   { name: "Gaurishankar Rudraksha in Gold", benefit: "For Harmony, Unity & Strong Relationships", img: `${RL}rudraksha/Gold-Gaurishankar-Rudraksha.jpg` },
   { name: "Shani Kantha", benefit: "For Stability, Protection & Long-Term Success", img: `${RL}rudraksha/Shani-Kantha.jpg` },
-  { name: "Surya Power® in Gold (12 Mukhi)", benefit: "For Leadership, Confidence & Inner Strength", img: `${RL}rudraksha/Indramala.jpg` },
+  { name: "Surya Power® in Gold (12 Mukhi)", benefit: "For Leadership, Confidence & Inner Strength", img: `${RL}rudraksha/12-Mukhi-Rudraksha.jpg` },
   { name: "Kalinetra in Gold (9 Mukhi)", benefit: "For Fearlessness, Energy & Inner Power", img: `${RL}rudraksha/9-Mukhi-Rudraksha.jpg` },
   { name: "1 Mukhi Rudraksha in Gold", benefit: "For Enlightenment, Focus & Supreme Consciousness", img: `${RL}rudraksha/1-Mukhi-Rudraksha.jpg` },
   { name: "Indra Mala", benefit: "For Supreme Power, Prosperity & Divine Abundance", img: `${RL}rudraksha/Indramala.jpg` },
@@ -144,7 +145,7 @@ const MEDIA_LOGOS = [1, 2, 3, 4, 5, 6, 7, 8, 9].map((n) => `${RL}media-logo/${n}
 const PAYMENT_GATEWAYS = [1, 2, 3, 4, 5, 6, 7, 8, 9].map((n) => `${RL}payment-gateway/pg-${n}.jpg`);
 
 const STATS = [
-  { label: "Believe Clients", suffix: "+", numericTarget: 500000, display: "5,00,000" },
+  { label: "Believer Clients", suffix: "+", numericTarget: 500000, display: "5,00,000" },
   { label: "Repeat Customers", suffix: "%", numericTarget: 90, display: "90" },
   { label: "Years of Expertise", suffix: "+", numericTarget: 25, display: "25" },
   { label: "Countries Served", suffix: "+", numericTarget: 52, display: "52" },
@@ -560,7 +561,8 @@ function QuoteSection() {
       <div className="max-w-4xl mx-auto px-6 text-center">
         <p className="text-[#C9A227] text-sm tracking-[0.4em] uppercase font-sans mb-6">Ancient Vedic Wisdom</p>
         <p className="font-serif text-2xl sm:text-3xl md:text-4xl font-light text-[#800000] italic leading-relaxed mb-6">
-          "रुद्राक्षं शिवयोर्मध्ये सर्वपापहरं परम्"
+          "बहुना जन्मनामन्ते महादेव प्रसादतः रुद्राक्षधारणे वाञ्छा<br/>
+          स्वभावदेव जायते रुद्रक्षस्य तु महात्म्य जाबालौरादरेण तु"
         </p>
         <div className="flex items-center justify-center gap-4 mb-6">
           <div className="h-px bg-[#C9A227]/40 w-16" />
@@ -570,7 +572,7 @@ function QuoteSection() {
         <p className="font-serif text-lg sm:text-xl text-[#2C1E16] leading-relaxed max-w-2xl mx-auto italic">
           "Devotion to Rudraksha does not come without reason — you receive it only if it is in your destiny or good fortune."
         </p>
-        <p className="text-[#5C4A42] text-xs font-sans mt-4 tracking-widest uppercase opacity-60">— Shiva Purana</p>
+        <p className="text-[#5C4A42] text-xs font-sans mt-4 tracking-widest uppercase opacity-60">— Shrimad Devi Bhagvatam</p>
       </div>
     </section>
   );
@@ -631,8 +633,15 @@ function TrustedBySeekersSection() {
       </div>
 
       {/* Row 1: left scroll */}
-      <div className="mb-4">
-        <Marquee speed={40} gradient gradientColor={[248, 244, 236]} gradientWidth={80} pauseOnHover>
+      <div className="mb-4 overflow-hidden">
+        <Marquee
+          speed={40}
+          gradient
+          gradientColor={[248, 244, 236]}
+          gradientWidth={80}
+          pauseOnHover
+          style={{ overflowY: "hidden" }}
+        >
           {[...CLIENTS_ROW1, ...CLIENTS_ROW1].map((c, i) => (
             <ClientCard key={`r1-${i}`} client={c} />
           ))}
@@ -640,11 +649,21 @@ function TrustedBySeekersSection() {
       </div>
 
       {/* Row 2: right scroll */}
-      <Marquee speed={40} direction="right" gradient gradientColor={[248, 244, 236]} gradientWidth={80} pauseOnHover>
-        {[...CLIENTS_ROW2, ...CLIENTS_ROW2].map((c, i) => (
-          <ClientCard key={`r2-${i}`} client={c} />
-        ))}
-      </Marquee>
+      <div className="overflow-hidden">
+        <Marquee
+          speed={40}
+          direction="right"
+          gradient
+          gradientColor={[248, 244, 236]}
+          gradientWidth={80}
+          pauseOnHover
+          style={{ overflowY: "hidden" }}
+        >
+          {[...CLIENTS_ROW2, ...CLIENTS_ROW2].map((c, i) => (
+            <ClientCard key={`r2-${i}`} client={c} />
+          ))}
+        </Marquee>
+      </div>
     </section>
   );
 }
@@ -723,6 +742,7 @@ function VideoTestimonialsSection() {
                   src={t.img}
                   alt={`Testimonial ${i + 1}`}
                   className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                  style={{ objectPosition: "center center" }}
                   onError={(e) => { e.target.style.backgroundColor = "#E8DFD0"; e.target.style.display = "none"; }}
                 />
               </div>
@@ -910,6 +930,11 @@ function CTABanner() {
 // ── FOOTER ──
 function SiteFooter() {
   const navigate = useNavigate();
+  const scrollTo = (id) => {
+    const el = document.getElementById(id);
+    if (el) el.scrollIntoView({ behavior: "smooth" });
+  };
+
   return (
     <footer className="bg-[#2C1E16] text-white" data-testid="footer">
       {/* Main footer */}
@@ -918,16 +943,13 @@ function SiteFooter() {
           {/* Logo + message */}
           <div className="text-center mb-10 pb-10 border-b border-white/10">
             <img
-              src={`${RL}footer-logo.png`}
+              src={LOGO_URL}
               alt="Rudralife Logo"
-              className="h-12 mx-auto mb-6"
-              onError={(e) => {
-                e.target.style.display = "none";
-                const fallback = e.target.nextSibling;
-                if (fallback) fallback.style.display = "block";
+              className="h-12 mx-auto mb-6 object-contain"
+              style={{
+                filter: "drop-shadow(0 0 5px rgba(255,255,255,0.9)) drop-shadow(0 0 2px rgba(255,255,255,0.8)) brightness(1.3)",
               }}
             />
-            <img src={LOGO_URL} alt="Rudralife Logo" className="h-12 mx-auto mb-6 brightness-110" style={{ display: "none" }} />
             <p className="font-serif text-base sm:text-lg font-light text-white/85 leading-relaxed max-w-2xl mx-auto italic">
               "At Rudralife, we believe that Rudraksha is not just a bead — it is a divine connection. For over 25 years, we have guided thousands of seekers on their spiritual journey with authenticity, trust, and sacred knowledge."
             </p>
@@ -939,7 +961,7 @@ function SiteFooter() {
               <h4 className="font-serif text-sm font-semibold text-[#C9A227] mb-3 tracking-wide">Contact Us</h4>
               <div className="space-y-2">
                 <a href="tel:+919820302028" className="flex items-center gap-2 text-white/65 text-sm font-sans hover:text-[#C9A227] transition-colors">
-                  <Phone size={14} /> +91 98203 02028
+                  <Phone size={14} /> +91 9172088 19922
                 </a>
                 <a href="mailto:info@rudralife.com" className="flex items-center gap-2 text-white/65 text-sm font-sans hover:text-[#C9A227] transition-colors">
                   <Mail size={14} /> info@rudralife.com
@@ -954,8 +976,8 @@ function SiteFooter() {
               <h4 className="font-serif text-sm font-semibold text-[#C9A227] mb-3 tracking-wide">Quick Links</h4>
               <ul className="space-y-2 text-white/65 text-sm font-sans">
                 <li><button onClick={() => navigate("/start")} className="hover:text-[#C9A227] transition-colors text-left">Get FREE Recommendation</button></li>
-                <li><a href="/#panel-experts" className="hover:text-[#C9A227] transition-colors">Meet Our Experts</a></li>
-                <li><a href="/#faq" className="hover:text-[#C9A227] transition-colors">FAQs</a></li>
+                <li><button onClick={() => scrollTo("panel-experts")} className="hover:text-[#C9A227] transition-colors">Meet Our Experts</button></li>
+                <li><button onClick={() => scrollTo("faq")} className="hover:text-[#C9A227] transition-colors">FAQs</button></li>
                 <li><a href="https://rudralife.com/terms-and-conditions" target="_blank" rel="noopener noreferrer" className="hover:text-[#C9A227] transition-colors">Terms & Conditions</a></li>
                 <li><a href="https://rudralife.com/privacy-policy" target="_blank" rel="noopener noreferrer" className="hover:text-[#C9A227] transition-colors">Privacy Policy</a></li>
               </ul>
@@ -997,13 +1019,13 @@ function SiteFooter() {
                 { label: "Facebook", href: "https://www.facebook.com/rudralife", icon: (
                   <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M18 2h-3a5 5 0 00-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 011-1h3z"/></svg>
                 )},
-                { label: "Instagram", href: "https://www.instagram.com/rudralife", icon: (
+                { label: "Instagram", href: "https://www.instagram.com/rudraliferudraksha?igsh=MXR2NjVvbG94MDNvMw==", icon: (
                   <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"/><path d="M16 11.37A4 4 0 1112.63 8 4 4 0 0116 11.37z"/><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"/></svg>
                 )},
                 { label: "YouTube", href: "https://www.youtube.com/@rudralife", icon: (
                   <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M22.54 6.42a2.78 2.78 0 00-1.95-1.96C18.88 4 12 4 12 4s-6.88 0-8.59.46A2.78 2.78 0 001.46 6.42 29 29 0 001 12a29 29 0 00.46 5.58A2.78 2.78 0 003.41 19.6C5.12 20 12 20 12 20s6.88 0 8.59-.46a2.78 2.78 0 001.95-1.95A29 29 0 0023 12a29 29 0 00-.46-5.58z"/><polygon fill="#2C1E16" points="9.75 15.02 15.5 12 9.75 8.98 9.75 15.02"/></svg>
                 )},
-                { label: "LinkedIn", href: "https://www.linkedin.com/company/rudralife", icon: (
+                { label: "LinkedIn", href: "https://www.linkedin.com/company/rudralife-pvt-ltd-/posts/?feedView=all", icon: (
                   <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M16 8a6 6 0 016 6v7h-4v-7a2 2 0 00-2-2 2 2 0 00-2 2v7h-4v-7a6 6 0 016-6zM2 9h4v12H2z"/><circle cx="4" cy="4" r="2"/></svg>
                 )},
               ].map((s) => (
