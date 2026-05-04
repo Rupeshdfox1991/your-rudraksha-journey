@@ -332,6 +332,7 @@ export default function GetStartedPage() {
       if (resp.ok) {
         localStorage.setItem("rudra_name", form.fullName);
         navigate("/thankyou");
+        window.location.reload(); // force reload
       } else {
         const err = await resp.json().catch(() => ({}));
         alert(err.detail || "Something went wrong. Please try again.");
