@@ -330,6 +330,28 @@ export default function GetStartedPage() {
         }),
       });
       if (resp.ok) {
+
+         // Send WhatsApp Template Message using AiSency Integration
+      await fetch("https://backend.aisensy.com/campaign/t1/api/v2", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${process.env.REACT_APP_AISENSY_API_KEY}`,
+        },
+        body: JSON.stringify({
+          apiKey: process.env.REACT_APP_AISENSY_API_KEY,
+          campaignName: "EP 2.0 Msg After Form Filing",
+          destination: `${form.countryCode.replace("+", "")}${form.phoneNumber}`,
+          userName: form.fullName,
+          templateParams: [],
+          "media": {
+                  "url": `${LOCAL_IMAGE_BASE}/chennai-exhibition-ai-sensy.jpeg`,
+                  "filename": "chennai-exhibition-ai-sensy.jpeg"
+                }
+        }),
+      });
+      //Aisency Integration Done
+
         localStorage.setItem("rudra_name", form.fullName);
         navigate("/thankyou");
         window.location.reload(); // force reload
