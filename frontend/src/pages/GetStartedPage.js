@@ -345,7 +345,7 @@ export default function GetStartedPage() {
           userName: form.fullName,
           templateParams: [],
           "media": {
-                  "url": `${LOCAL_IMAGE_BASE}/chennai-exhibition-ai-sensy.jpeg`,
+                  "url": "https://rudralife.com/rudraksha-recommendation/images/chennai-exhibition-ai-sensy.jpeg",
                   "filename": "chennai-exhibition-ai-sensy.jpeg"
                 }
         }),
