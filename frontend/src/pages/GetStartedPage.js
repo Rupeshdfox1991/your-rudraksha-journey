@@ -365,23 +365,20 @@ export default function GetStartedPage() {
                 <span className="text-[#C9A227] font-serif text-xl">ॐ</span>
                 <div className="h-px flex-1 bg-[#C9A227]/30" />
               </div>
-              <p className="text-[#5C4A42] text-sm leading-relaxed font-sans">
-                Your details have been received. One of our Rudraksha experts will contact you within{" "}
-                <strong className="text-[#800000]">24 hours</strong> with your personalised recommendation.
-              </p>
             </div>
 
-            {/* WhatsApp highlight box */}
-            <div className="bg-[#E8F8EF] border-2 border-[#25D366]/40 rounded-2xl p-4 mb-5">
-              <div className="flex items-center gap-3 mb-2.5">
-                <div className="w-9 h-9 rounded-full bg-[#25D366] flex items-center justify-center flex-shrink-0">
-                  <WhatsAppIcon size={18} />
+            {/* WhatsApp main card */}
+            <div className="bg-[#E8F8EF] border-2 border-[#25D366]/50 rounded-2xl p-5 mb-5 shadow-sm">
+              <div className="flex items-center gap-3 mb-4">
+                <div className="w-11 h-11 rounded-full bg-[#25D366] flex items-center justify-center flex-shrink-0 shadow-md">
+                  <WhatsAppIcon size={22} />
                 </div>
-                <p className="font-semibold text-[#1a5c36] text-sm font-sans leading-tight">
+                <p className="font-bold text-[#1a5c36] text-base font-sans leading-snug">
                   Our Rudraksha Experts Will Contact You Shortly Via WhatsApp
                 </p>
               </div>
-              <div className="bg-white/70 rounded-xl px-3 py-2.5 border border-[#25D366]/20">
+              {/* Inner highlighted box */}
+              <div className="bg-white border border-[#25D366]/30 rounded-xl px-4 py-3">
                 <p className="text-[#5C4A42] text-xs font-sans leading-relaxed">
                   If you're not on WhatsApp, reach out to us at{" "}
                   <a
