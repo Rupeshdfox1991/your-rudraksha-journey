@@ -369,12 +369,12 @@ export default function GetStartedPage() {
 
             {/* WhatsApp line above box */}
             <div className="flex items-center justify-center gap-2 mb-3">
-              <div className="w-5 h-5 rounded-full bg-[#25D366] flex items-center justify-center flex-shrink-0">
-                <WhatsAppIcon size={11} />
-              </div>
               <p className="font-semibold text-[#1a5c36] text-sm font-sans text-center leading-snug">
                 Our Rudraksha Experts Will Contact You Shortly Via WhatsApp
               </p>
+              <div className="w-5 h-5 rounded-full bg-[#25D366] flex items-center justify-center flex-shrink-0">
+                <WhatsAppIcon size={11} />
+              </div>
             </div>
 
             {/* Email box */}
