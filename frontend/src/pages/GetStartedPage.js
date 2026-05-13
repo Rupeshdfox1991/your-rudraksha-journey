@@ -367,28 +367,27 @@ export default function GetStartedPage() {
               </div>
             </div>
 
-            {/* WhatsApp main card */}
-            <div className="bg-[#E8F8EF] border-2 border-[#25D366]/50 rounded-2xl p-5 mb-5 shadow-sm">
-              <div className="flex items-center gap-3 mb-4">
-                <div className="w-11 h-11 rounded-full bg-[#25D366] flex items-center justify-center flex-shrink-0 shadow-md">
-                  <WhatsAppIcon size={22} />
-                </div>
-                <p className="font-bold text-[#1a5c36] text-base font-sans leading-snug">
-                  Our Rudraksha Experts Will Contact You Shortly Via WhatsApp
-                </p>
+            {/* WhatsApp line above box */}
+            <div className="flex items-center justify-center gap-2 mb-3">
+              <div className="w-5 h-5 rounded-full bg-[#25D366] flex items-center justify-center flex-shrink-0">
+                <WhatsAppIcon size={11} />
               </div>
-              {/* Inner highlighted box */}
-              <div className="bg-white border border-[#25D366]/30 rounded-xl px-4 py-3">
-                <p className="text-[#5C4A42] text-xs font-sans leading-relaxed">
-                  If you're not on WhatsApp, reach out to us at{" "}
-                  <a
-                    href="mailto:info@rudralife.com"
-                    className="text-[#800000] font-bold underline underline-offset-2 hover:text-[#9B2030] transition-colors"
-                  >
-                    info@rudralife.com
-                  </a>
-                </p>
-              </div>
+              <p className="font-semibold text-[#1a5c36] text-sm font-sans text-center leading-snug">
+                Our Rudraksha Experts Will Contact You Shortly Via WhatsApp
+              </p>
+            </div>
+
+            {/* Email box */}
+            <div className="bg-white border-2 border-[#25D366]/40 rounded-xl px-4 py-3 mb-5 text-center">
+              <p className="text-[#5C4A42] text-xs font-sans leading-relaxed">
+                If you're not on WhatsApp, reach out to us at{" "}
+                <a
+                  href="mailto:info@rudralife.com"
+                  className="text-[#800000] font-bold underline underline-offset-2 hover:text-[#9B2030] transition-colors"
+                >
+                  info@rudralife.com
+                </a>
+              </p>
             </div>
 
             {/* What happens next */}
