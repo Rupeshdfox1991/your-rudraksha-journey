@@ -1,0 +1,116 @@
+{
+  "theme": "Light",
+  "archetype": "1 (Organic & Earthy) blended with 5 (Jewel & Luxury)",
+  "colors": {
+    "background": "#F8F4EC",
+    "surface": "#FFFFFF",
+    "surface_secondary": "#FDFBF7",
+    "text_primary": "#2C1E16",
+    "text_secondary": "#5C4A42",
+    "accent_gold": "#D4AF37",
+    "accent_gold_light": "#E5C158",
+    "accent_maroon": "#800000",
+    "accent_maroon_light": "#A02020",
+    "border_light": "#E8DFD0"
+  },
+  "typography": {
+    "headings": {
+      "font_family": "'Cormorant Garamond', Georgia, serif",
+      "style": "tracking-tight leading-tight font-medium"
+    },
+    "body": {
+      "font_family": "'Manrope', system-ui, sans-serif",
+      "style": "leading-relaxed"
+    }
+  },
+  "layout_spacing": {
+    "container_padding": "px-6 md:px-12 lg:px-24",
+    "section_spacing": "py-20 lg:py-32",
+    "grid_gap": "gap-8 lg:gap-12",
+    "border_radius": "rounded-2xl lg:rounded-[32px]"
+  },
+  "components": {
+    "hero_section": {
+      "layout": "grid md:grid-cols-2 gap-12 items-center min-h-[85vh]",
+      "alignment": "text-left on desktop, center on mobile",
+      "features": "Ivory background, text on left, mala image on right. Subtle gold accent lines."
+    },
+    "multi_step_form": {
+      "steps": 7,
+      "features": [
+        "Progress bar at top",
+        "Smooth step transitions (using framer-motion)",
+        "Success Screen (Namaste message on Step 7)",
+        "Trust message bar: 'We respect your privacy'"
+      ],
+      "styling": "Card layout with solid white/ivory background, soft 1px gold borders, no heavy shadows. Use Shadcn customized components."
+    },
+    "quote_section": {
+      "layout": "flex flex-col items-center justify-center text-center max-w-4xl mx-auto",
+      "features": [
+        "Sanskrit + English quote",
+        "Maroon highlights on text",
+        "Serif font, italicized, text-3xl or 4xl"
+      ]
+    },
+    "experts_flip_cards": {
+      "layout": "grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8",
+      "styling": "Light ivory theme, 1px gold/maroon border on hover, elegant 3D flip animation on hover or click (using framer-motion). Back of card contains expert details."
+    },
+    "featured_and_recognised": {
+      "layout": "flex flex-col gap-12",
+      "video_cards": "grid md:grid-cols-3 gap-6. Include play button modal, image thumbnail with gold play icon overlay.",
+      "marquee": "Use react-fast-marquee for scrolling media logos (Hindustan Times, Deccan Chronicle, Garavi Gujarat, ET, Sunrise Radio, Bombay Times, Republic Bharat, Swastik Production)."
+    },
+    "floating_whatsapp": {
+      "position": "fixed bottom-6 right-6 z-50",
+      "styling": "Green/Gold pulse animation. Soft drop shadow. Rounded-full icon button."
+    },
+    "sticky_header": {
+      "features": "Light version (ivory bg). Frosted glass effect (backdrop-blur-md bg-[#F8F4EC]/80). Includes Logo and a primary CTA button."
+    },
+    "footer": {
+      "features": [
+        "Emotional trust message",
+        "Contact info",
+        "Simple centered layout",
+        "Gold/Maroon branding elements"
+      ]
+    }
+  },
+  "media": {
+    "hero_image": {
+      "url": "https://static.prod-images.emergentagent.com/jobs/487e77ea-1a09-49e8-92a5-ba077b054a4a/images/2572ce39704db8895e7a777ea869603c8e5643dcc031c88e5765c31717ff3163.png",
+      "alt": "Premium wooden Rudraksha mala beads on ivory silk"
+    },
+    "background_texture": {
+      "url": "https://static.prod-images.emergentagent.com/jobs/487e77ea-1a09-49e8-92a5-ba077b054a4a/images/d19a7d3d67a6b175be688cf594d87e46ca0937f900ffa52d1603906d1f2b5027.png",
+      "alt": "Luxury ivory texture with subtle gold and maroon"
+    },
+    "expert_guru": {
+      "url": "https://static.prod-images.emergentagent.com/jobs/487e77ea-1a09-49e8-92a5-ba077b054a4a/images/1146b0ecb98629b76bcf08d690e80de0588f57dcb5c3039e5ea7a19c4e73c9a9.png",
+      "alt": "Spiritual guru meditating in a bright serene ivory temple"
+    },
+    "video_thumbnail": {
+      "url": "https://static.prod-images.emergentagent.com/jobs/487e77ea-1a09-49e8-92a5-ba077b054a4a/images/0ae8e931348a9eee76878c319a3c23b8d734537c68f778ed37bf42ccb08aba0e.png",
+      "alt": "Spiritual expert talking, luxury wellness aesthetic"
+    },
+    "logos": [
+      {"name": "Hindustan Times", "url": "https://logo.clearbit.com/hindustantimes.com"},
+      {"name": "Deccan Chronicle", "url": "https://logo.clearbit.com/deccanchronicle.com"},
+      {"name": "Economic Times", "url": "https://logo.clearbit.com/economictimes.indiatimes.com"},
+      {"name": "Bombay Times", "url": "https://logo.clearbit.com/timesofindia.indiatimes.com"},
+      {"name": "Republic Bharat", "url": "https://logo.clearbit.com/republicworld.com"}
+    ]
+  },
+  "instructions_to_main_agent": [
+    "CRITICAL: Apply STRICTLY a Light Theme. DO NOT add any dark mode toggles or dark variants. The background must remain Ivory/skin tone (#F8F4EC) globally.",
+    "Use 'Cormorant Garamond' (Serif) for headings and 'Manrope' for body text. These are already added in the CSS, just apply font-serif for headings.",
+    "Install 'lucide-react' for icons (WhatsApp icon, Play button, etc).",
+    "Install 'framer-motion' for flip cards (Experts section), 7-step form step-transitions, and the floating WhatsApp pulse animation.",
+    "Install 'react-fast-marquee' for the 'Featured & Recognised' scrolling media logos section.",
+    "Build the 7-step form using Shadcn customized components. Provide a visual progress bar (1 to 7). Step 7 is a 'Namaste' success message. Add the text 'We respect your privacy' under the form.",
+    "Ensure the floating WhatsApp button uses a pulse animation with a soft shadow and stays in the bottom-right.",
+    "All interactive elements MUST include 'data-testid' attributes in kebab-case."
+  ]
+}

@@ -9,20 +9,6 @@ import {
 } from "lucide-react";
 
 const API = process.env.REACT_APP_BACKEND_URL + "/api";
-
-// Map goal keys → readable labels
-const GOALS_MAP = {
-  wealth_prosperity: "Wealth & Prosperity",
-  health_healing: "Health & Healing",
-  spiritual_growth: "Spiritual Growth",
-  mental_clarity_focus: "Mental Clarity & Focus",
-  confidence_leadership: "Confidence & Leadership",
-  protection_security: "Protection & Security",
-  peace_stability: "Peace & Stability",
-  better_relationships: "Better Relationships",
-  career_growth: "Career Growth",
-};
-
 const GENDER_OPTIONS = ["", "Male", "Female", "Other"];
 const LIMIT = 20;
 
@@ -47,11 +33,8 @@ function formatDateTime(iso) {
   } catch { return iso; }
 }
 
-function resolveGoals(s) {
-  const arr = Array.isArray(s.goals) && s.goals.length > 0 ? s.goals : [];
-  if (arr.length > 0) return arr.map(g => GOALS_MAP[g] || g).join(", ");
-  if (s.primary_goal) return GOALS_MAP[s.primary_goal] || s.primary_goal;
-  return "—";
+function resolveProfession(s) {
+  return s.profession || "—";
 }
 
 // ── Stat Card ──
@@ -81,7 +64,7 @@ function DetailModal({ submission: s, onClose }) {
     ["Gender", s.gender],
     ["City", s.city],
     ["Country", s.country],
-    ["Choose the areas where you seek alignment and growth", resolveGoals(s)],
+    ["Profession", resolveProfession(s)],
     ["Your Story (optional)", s.story],
     ["Submitted At", formatDateTime(s.submitted_at)],
     ["Status", s.status],
@@ -193,7 +176,7 @@ export default function AdminDashboard() {
         "Gender": s.gender || "",
         "City": s.city || "",
         "Country": s.country || "",
-        "Choose the areas where you seek alignment and growth": resolveGoals(s),
+        "Profession": s.profession || "",
         "Your Story (optional)": s.story || "",
         "Submitted At": formatDateTime(s.submitted_at),
         "Status": s.status || "",
@@ -286,7 +269,7 @@ export default function AdminDashboard() {
               <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-6">
                 <StatCard label="Total Submissions" value={stats.total} icon={Users} color="bg-[#4A235A]" />
                 <StatCard label="Pending Review" value={stats.pending} icon={Clock} color="bg-[#D4AF37]" />
-                <StatCard label="Top Goal" value={GOALS_MAP[stats.top_goals?.[0]?.goal] || stats.top_goals?.[0]?.goal || "—"} icon={TrendingUp} color="bg-[#2A1133]" />
+                <StatCard label="Top Goal" value={stats.top_goals?.[0]?.goal || "—"} icon={TrendingUp} color="bg-[#2A1133]" />
               </div>
             )}
 
@@ -412,7 +395,7 @@ export default function AdminDashboard() {
                           "Date Submitted", "Full Name", "Mobile Number",
                           "Email Address", "Date of Birth", "Gender",
                           "City", "Country",
-                          "Areas Seeking Growth", "Story", "Action",
+                          "Profession", "Story", "Action",
                         ].map((h) => (
                           <th key={h} className="text-left px-4 py-3 text-xs text-[#6B5A74] font-sans uppercase tracking-wide whitespace-nowrap">
                             {h}
@@ -449,7 +432,7 @@ export default function AdminDashboard() {
                             {s.country || "—"}
                           </td>
                           <td className="px-4 py-3 text-[#6B5A74] font-sans text-xs max-w-[200px]">
-                            <span className="line-clamp-2">{resolveGoals(s)}</span>
+                            <span className="line-clamp-2">{resolveProfession(s)}</span>
                           </td>
                           <td className="px-4 py-3 text-[#6B5A74] font-sans text-xs max-w-[160px]">
                             <span className="line-clamp-2">{s.story || "—"}</span>
