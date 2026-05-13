@@ -99,7 +99,16 @@ Spiritual seekers globally (primarily India, UAE, USA, UK, Singapore). 98% on mo
 - All landing page CTAs now route to `/start`
 - Legacy `/recommendation` route kept for backward compatibility
 
-### Phase 7 – Admin Dashboard Upgrade (2026-02)
+### Phase 8 – Form Redesign + Profession Column (2026-02)
+- Form reduced from 6 steps to 5: Name → Contact → Personal → Location → Story (Goals step removed)
+- Step labels updated: Mobile No, Email Id (Contact); DOB + Gender + Profession (Personal)
+- DOB: custom DD/MM/YYYY separate dropdown selectors (Day 1-31, Month 01-12, Year 1920-2026 descending)
+- Profession: free-text input added to Personal step
+- Location: Country changed from text input to dropdown with all 195 countries
+- Thank you screen: "Namaste, [Name]!" + WhatsApp highlight box + info@rudralife.com clickable email + Chat on WhatsApp + Back to Home buttons
+- Admin dashboard: "Areas Seeking Growth" column replaced with "Profession"
+- Excel export: column also updated to "Profession"
+- Backend: profession field added to SimpleSubmissionCreate model + stored in DB
 - Advanced filter panel: From Date / To Date / Gender dropdown with Apply Filter button
 - Clear filter (X) button with active filter tags display
 - Export to Excel button with no download limit — downloads ALL filtered leads

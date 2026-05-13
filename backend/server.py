@@ -191,6 +191,7 @@ class SimpleSubmissionCreate(BaseModel):
     state: str = ""
     country: str = "India"
     countryCode: str = "+91"
+    profession: str = ""
     primaryGoal: str = ""
     mainChallenge: str = ""
     goals: List[str] = []
@@ -209,6 +210,7 @@ async def create_submission(data: SimpleSubmissionCreate):
         "state": data.state,
         "country": data.country,
         "country_code": data.countryCode,
+        "profession": data.profession,
         "primary_goal": data.primaryGoal or (data.goals[0] if data.goals else ""),
         "goals": data.goals,
         "story": data.story or data.mainChallenge,
