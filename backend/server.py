@@ -231,7 +231,7 @@ async def create_submission(data: SimpleSubmissionCreate):
     doc = {
         "id": str(uuid.uuid4()),
         "name": data.fullName,
-        "phone": data.phoneNumber,
+        "phone": f"{data.countryCode} {data.phoneNumber}",
         "email": data.email,
         "dob": data.dateOfBirth,
         "gender": data.gender,
