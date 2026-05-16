@@ -6,6 +6,7 @@ import GetStartedPage from "./pages/GetStartedPage";
 import ResultPage from "./pages/ResultPage";
 import AdminLogin from "./pages/AdminLogin";
 import AdminDashboard from "./pages/AdminDashboard";
+import ThankYouPage from "./pages/ThankYouPage";
 
 function ProtectedRoute({ children }) {
   const token = localStorage.getItem("rudralife_admin_token");
@@ -15,10 +16,11 @@ function ProtectedRoute({ children }) {
 
 function App() {
   return (
-    <BrowserRouter>
+    <BrowserRouter basename={process.env.PUBLIC_URL}>
       <Routes>
         <Route path="/" element={<LandingPage />} />
         <Route path="/start" element={<GetStartedPage />} />
+        <Route path="/thankyou" element={<ThankYouPage />} />
         <Route path="/recommendation" element={<RecommendationForm />} />
         <Route path="/result/:id" element={<ResultPage />} />
         <Route path="/admin/login" element={<AdminLogin />} />

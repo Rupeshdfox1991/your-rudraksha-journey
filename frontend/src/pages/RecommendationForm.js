@@ -85,7 +85,7 @@ function TrustBar() {
   return (
     <div className="flex items-center justify-center gap-2 bg-[#F0FDF4] border border-green-200 text-green-800 text-xs font-sans px-4 py-2.5 rounded-xl">
       <Lock size={13} className="text-green-600 flex-shrink-0" />
-      <span><strong>We keep your information</strong> secure and completely confidential.</span>
+      <span>We are committed to protecting your data and maintaining your privacy.</span>
     </div>
   );
 }

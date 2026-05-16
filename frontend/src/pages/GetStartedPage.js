@@ -7,18 +7,19 @@ import {
 } from "lucide-react";
 
 const API_URL = process.env.REACT_APP_BACKEND_URL;
-const LOGO_URL = "https://customer-assets.emergentagent.com/job_spiritual-path-49/artifacts/it9ar00d_image.png";
-const HERO_MALA_IMG = "https://customer-assets.emergentagent.com/job_spiritual-path-49/artifacts/7pbng6g5_1920%20x%20720%20Indramala%20website%20Banner%20copy.jpg.jpeg";
-const WHATSAPP = "919820302028";
+const LOCAL_IMAGE_BASE = `${process.env.PUBLIC_URL}/images`;
+const LOGO_URL = `${LOCAL_IMAGE_BASE}/logo.png`;
+const HERO_MALA_IMG = `${LOCAL_IMAGE_BASE}/hero-banner.jpeg`;
+const WHATSAPP = "917208819922";
 
 const EXPERT_FACES = [
-  { name: "Dr. Tanay Seetha", img: "https://customer-assets.emergentagent.com/job_spiritual-path-49/artifacts/6qw0vi22_image.png" },
-  { name: "Hemlata Sojitra", img: "https://customer-assets.emergentagent.com/job_spiritual-path-49/artifacts/7n5ypemd_image.png" },
-  { name: "Saumil Seetha", img: "https://customer-assets.emergentagent.com/job_spiritual-path-49/artifacts/3ri80p5z_image.png" },
-  { name: "Shruti Sharma", img: "https://customer-assets.emergentagent.com/job_spiritual-path-49/artifacts/f6geckg9_image.png" },
-  { name: "Shilpa Agarwal", img: "https://customer-assets.emergentagent.com/job_spiritual-path-49/artifacts/8xlnt6uc_image.png" },
-  { name: "Madhulika", img: "https://customer-assets.emergentagent.com/job_spiritual-path-49/artifacts/f8rsnw1s_Madhulika.jpg.jpeg" },
-  { name: "Dhruv Sir", img: "https://customer-assets.emergentagent.com/job_spiritual-path-49/artifacts/fn5icn4z_Dhruv%20Sir.jpg.jpeg" },
+    { name: "Dr. Tanay Seetha", img: `${LOCAL_IMAGE_BASE}/speaker-1.png` },
+    { name: "Hemlata Sojitra", img: `${LOCAL_IMAGE_BASE}/speaker-2.png` },
+    { name: "Shruti Sharma", img: `${LOCAL_IMAGE_BASE}/speaker-5.jpg` },
+    { name: "Shilpa Agarwal", img: `${LOCAL_IMAGE_BASE}/speaker-3.jpg` },
+    { name: "Madhulika", img: `${LOCAL_IMAGE_BASE}/speaker-7.jpeg` },
+    { name: "Dhruv Sir", img: `${LOCAL_IMAGE_BASE}/speaker-6.jpeg` },
+    { name: "Saumil Seetha", img: `${LOCAL_IMAGE_BASE}/speaker-4.jpg` }
 ];
 
 const COUNTRY_CODES = [
@@ -103,7 +104,7 @@ const TRUST_POINTS = [
 ];
 
 const STATS = [
-  { num: "5,00,000+", label: "Believe Clients" },
+  { num: "5,00,000+", label: "Believer Clients" },
   { num: "90%", label: "Repeat Customers" },
   { num: "25+", label: "Years Experience" },
   { num: "52+", label: "Countries" },
@@ -129,7 +130,15 @@ function TrustPanel({ navigate }) {
         {/* Logo */}
         <div className="mb-6">
           <button onClick={() => navigate("/")} className="cursor-pointer">
-            <img src={LOGO_URL} alt="Rudralife" className="h-10 object-contain filter brightness-0 invert" />
+            {/* <img src={LOGO_URL} alt="Rudralife" className="h-10 object-contain filter brightness-0 invert" /> */}
+             <img
+          src={LOGO_URL}
+          alt="Rudralife"
+          className="h-8 sm:h-10 object-contain"
+          style={{
+            filter: "drop-shadow(0 0 5px rgba(255,255,255,0.9)) drop-shadow(0 0 2px rgba(255,255,255,0.8)) brightness(1.3)",
+          }}
+        />
           </button>
         </div>
         {/* Headline */}
@@ -316,7 +325,8 @@ export default function GetStartedPage() {
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
           fullName: form.fullName,
-          phoneNumber: `${form.countryCode.replace(" CA", "")} ${form.phoneNumber}`,
+          // phoneNumber: `${form.countryCode.replace(" CA", "")} ${form.phoneNumber}`,
+          phoneNumber: form.phoneNumber,
           email: form.email,
           dateOfBirth,
           gender: form.gender,
@@ -330,8 +340,12 @@ export default function GetStartedPage() {
           mainChallenge: form.story,
         }),
       });
-      if (resp.ok) setStep(6);
-      else {
+      if (resp.ok) 
+      {
+          localStorage.setItem("rudra_name", form.fullName);
+        navigate("/thankyou");
+        window.location.reload(); // force reload
+      }else {
         const err = await resp.json().catch(() => ({}));
         alert(err.detail || "Something went wrong. Please try again.");
       }
@@ -466,7 +480,7 @@ export default function GetStartedPage() {
             <div className="px-5 sm:px-7 pt-4">
               <div className="flex items-center gap-2 bg-green-50 border border-green-100 text-green-800 text-xs font-sans px-3.5 py-2.5 rounded-xl">
                 <Lock size={12} className="text-green-500 flex-shrink-0" />
-                <span><strong>We keep your information</strong> secure and completely confidential.</span>
+                <span>We are committed to protecting your data and maintaining your privacy.</span>
               </div>
             </div>
 

@@ -1,5 +1,6 @@
 from dotenv import load_dotenv
 load_dotenv()
+import requests
 
 from fastapi import FastAPI, APIRouter, HTTPException, Depends
 from fastapi.security import HTTPBearer, HTTPAuthorizationCredentials
@@ -121,6 +122,33 @@ def get_recommendation(primary_goal: str, dob: str) -> dict:
     }
 
 
+    # ==========================================
+# GET ZOHO ACCESS TOKEN
+# ==========================================
+
+def get_zoho_access_token():
+
+    url = "https://accounts.zoho.in/oauth/v2/token"
+
+    params = {
+        "refresh_token": os.getenv("ZOHO_REFRESH_TOKEN"),
+        "client_id": os.getenv("ZOHO_CLIENT_ID"),
+        "client_secret": os.getenv("ZOHO_CLIENT_SECRET"),
+        "grant_type": "refresh_token"
+    }
+
+    response = requests.post(url, params=params)
+
+    token_data = response.json()
+
+    logger.info(f"Zoho Token Response: {token_data}")
+
+    if "access_token" not in token_data:
+        raise Exception(f"Unable to generate Zoho access token: {token_data}")
+
+    return token_data["access_token"]
+
+
 # ---- Models ----
 class AdminLoginReq(BaseModel):
     email: str
@@ -199,6 +227,7 @@ class SimpleSubmissionCreate(BaseModel):
 
 @api_router.post("/submissions")
 async def create_submission(data: SimpleSubmissionCreate):
+
     doc = {
         "id": str(uuid.uuid4()),
         "name": data.fullName,
@@ -217,8 +246,178 @@ async def create_submission(data: SimpleSubmissionCreate):
         "submitted_at": datetime.now(timezone.utc).isoformat(),
         "status": "pending",
     }
+
     await db.form_submissions.insert_one(doc)
-    return {"success": True, "submission_id": doc["id"]}
+
+    # ==========================================
+    # AISENSY INTEGRATION
+    # ==========================================
+
+    try:
+
+        phone = ''.join(filter(str.isdigit, data.phoneNumber))
+
+        # Remove leading 0 from local number
+        if phone.startswith("0"):
+            phone = phone[1:]
+
+        country_code = data.countryCode.replace(" ", "").replace("CA", "").strip()
+
+        # Ensure + exists
+        if not country_code.startswith("+"):
+            country_code = "+" + country_code.replace("+", "")
+
+        destination = f"{country_code}{phone}"
+
+        aisensy_payload = {
+
+            "apiKey": os.environ.get("AISENSY_API_KEY"),
+
+            "campaignName": "EP 2.0 Msg After Form Filing",
+
+            "destination": destination,
+
+            "userName": data.fullName,
+
+            "templateParams": [],
+
+            "attributes": {
+
+                "name": data.fullName,
+
+                "phone": data.phoneNumber,
+
+                "email": data.email,
+
+                "DOB": data.dateOfBirth,
+
+                "Gender": data.gender,
+
+                "Profession": data.profession,
+
+                "City": data.city,
+
+                "Country": data.country,
+
+                "Purpose": data.story
+
+            },
+
+            "media": {
+
+                "url":
+                    "https://rudralife.com/rudraksha-recommendation/images/chennai-exhibition-ai-sensy.jpeg",
+
+                "filename":
+                    "chennai-exhibition-ai-sensy.jpeg"
+
+            }
+
+        }
+
+        aisensy_response = requests.post(
+
+            "https://backend.aisensy.com/campaign/t1/api/v2",
+
+            json=aisensy_payload,
+
+            headers={
+                "Content-Type": "application/json",
+                "Authorization":
+                    f"Bearer {os.environ.get('AISENSY_API_KEY')}"
+            }
+
+        )
+
+        # logger.info(f"AiSensy Response: {aisensy_response.text}")
+
+    except Exception as e:
+
+        logger.error(f"AiSensy Error: {str(e)}")
+
+    # ==========================================
+    # ZOHO CRM INTEGRATION
+    # ==========================================
+
+    # try:
+
+    #     access_token = get_zoho_access_token()
+
+    #     formatted_dob = None
+
+    #     if data.dateOfBirth:
+        
+
+    #         formatted_dob = datetime.strptime(
+    #             data.dateOfBirth,
+    #             "%d-%m-%Y"
+    #         ).strftime("%Y-%m-%d")
+
+    #     zoho_payload = {
+    #         "data": [
+    #             {
+    #                 "Last_Name":
+    #                     data.fullName,
+
+    #                 "Lead_Source": "Rudraksha Recommendation",    
+
+    #                 "Mobile":
+    #                     f"{data.countryCode.replace('+', '')}{data.phoneNumber.replace(' ', '')}",
+
+    #                 "Email":
+    #                     data.email,
+
+    #                 "DOB":
+    #                     formatted_dob,
+
+    #                 "Gender":
+    #                     data.gender,
+
+    #                 "Profession":
+    #                     data.profession,
+
+    #                 "City":
+    #                     data.city,
+
+    #                 "Country":
+    #                     data.country,
+
+    #                 "Description":
+    #                     data.story
+    #             }
+    #         ]
+    #     }
+
+    #     zoho_response = requests.post(
+
+    #         "https://www.zohoapis.in/crm/v2/Leads",
+
+    #         json=zoho_payload,
+
+    #         headers={
+    #             "Authorization":
+    #                 f"Zoho-oauthtoken {access_token}",
+
+    #             "Content-Type":
+    #                 "application/json"
+    #         }
+
+    #     )
+
+    #     # logger.info(f"Zoho CRM Response: {zoho_response.text}")
+
+    #     if zoho_response.status_code not in [200, 201]:
+
+    #         logger.error(f"Zoho CRM Error: {zoho_response.text}")
+
+    # except Exception as e:
+
+    #     logger.error(f"Zoho Integration Error: {str(e)}")
+
+    return {
+        "success": True,
+        "submission_id": doc["id"]
+    }
 
 @api_router.get("/form/result/{submission_id}")
 async def get_result(submission_id: str):
