@@ -1,6 +1,7 @@
 from dotenv import load_dotenv
 load_dotenv()
 import requests
+import sys
 
 from fastapi import FastAPI, APIRouter, HTTPException, Depends
 from fastapi.security import HTTPBearer, HTTPAuthorizationCredentials
@@ -11,6 +12,7 @@ from typing import List, Optional
 import os, logging, uuid, jwt, bcrypt
 from datetime import datetime, timezone, timedelta
 from pathlib import Path
+import pytz
 
 ROOT_DIR = Path(__file__).parent
 load_dotenv(ROOT_DIR / '.env')
@@ -253,6 +255,44 @@ async def create_submission(data: SimpleSubmissionCreate):
     # AISENSY INTEGRATION
     # ==========================================
 
+    # Trigger Campign & Flow based on Time
+    india = pytz.timezone("Asia/Kolkata")
+    now = datetime.now(india)
+
+    current_day = now.weekday()
+    # Monday = 0
+    # Tuesday = 1
+    # Wednesday = 2
+    # Thursday = 3
+    # Friday = 4
+    # Saturday = 5
+    # Sunday = 6
+
+    current_hour = now.hour
+
+        # Decide campaign name
+    if current_day == 6:
+            # Sunday
+              print("Running: Sunday Flow")
+
+              campaign_name = "Final EP 2.0 After Hours & Sunday Flow"
+
+    elif current_day == 5 and current_hour >= 18:
+            # Saturday after 6 PM
+            campaign_name = "Final EP 2.0 After Hours SATURDAY Flow"
+
+    elif 10 <= current_hour < 18:
+            # Monday-Saturday business hours
+            campaign_name = "Final EP 2.0 Business Hours Flow"
+
+    else:
+            # Monday-Friday after hours
+
+            campaign_name = "Final EP 2.0 After Hours & Sunday Flow"
+
+
+       # end Trigger Campign & Flow based on Time
+
     try:
 
         phone = ''.join(filter(str.isdigit, data.phoneNumber))
@@ -269,23 +309,28 @@ async def create_submission(data: SimpleSubmissionCreate):
 
         destination = f"{country_code}{phone}"
 
+
+
         aisensy_payload = {
 
             "apiKey": os.environ.get("AISENSY_API_KEY"),
 
-            "campaignName": "EP 2.0 Msg After Form Filing",
+            "campaignName": campaign_name,
 
             "destination": destination,
 
             "userName": data.fullName,
 
-            "templateParams": [],
+            "templateParams": [
+                data.fullName
+            ],
+
 
             "attributes": {
 
                 "name": data.fullName,
 
-                "phone": data.phoneNumber,
+                "phone": destination,
 
                 "email": data.email,
 
@@ -303,15 +348,16 @@ async def create_submission(data: SimpleSubmissionCreate):
 
             },
 
-            "media": {
+            
+            # "media": {
 
-                "url":
-                    "https://rudralife.com/rudraksha-recommendation/images/chennai-exhibition-ai-sensy.jpeg",
+            #     "url":
+            #         "https://rudralife.com/rudraksha-recommendation/images/chennai-exhibition-ai-sensy.jpeg",
 
-                "filename":
-                    "chennai-exhibition-ai-sensy.jpeg"
+            #     "filename":
+            #         "chennai-exhibition-ai-sensy.jpeg"
 
-            }
+            # }
 
         }
 
@@ -329,7 +375,7 @@ async def create_submission(data: SimpleSubmissionCreate):
 
         )
 
-        # logger.info(f"AiSensy Response: {aisensy_response.text}")
+        logger.info(f"AiSensy Response: {aisensy_response.text}")
 
     except Exception as e:
 
@@ -339,80 +385,80 @@ async def create_submission(data: SimpleSubmissionCreate):
     # ZOHO CRM INTEGRATION
     # ==========================================
 
-    # try:
+    try:
 
-    #     access_token = get_zoho_access_token()
+        access_token = get_zoho_access_token()
 
-    #     formatted_dob = None
+        formatted_dob = None
 
-    #     if data.dateOfBirth:
+        if data.dateOfBirth:
         
 
-    #         formatted_dob = datetime.strptime(
-    #             data.dateOfBirth,
-    #             "%d-%m-%Y"
-    #         ).strftime("%Y-%m-%d")
+            formatted_dob = datetime.strptime(
+                data.dateOfBirth,
+                "%d-%m-%Y"
+            ).strftime("%Y-%m-%d")
 
-    #     zoho_payload = {
-    #         "data": [
-    #             {
-    #                 "Last_Name":
-    #                     data.fullName,
+        zoho_payload = {
+            "data": [
+                {
+                    "Last_Name":
+                        data.fullName,
 
-    #                 "Lead_Source": "Rudraksha Recommendation",    
+                    "Lead_Source": "Rudraksha Recommendation",    
 
-    #                 "Mobile":
-    #                     f"{data.countryCode.replace('+', '')}{data.phoneNumber.replace(' ', '')}",
+                    "Mobile":
+                        f"{data.countryCode.replace('+', '')}{data.phoneNumber.replace(' ', '')}",
 
-    #                 "Email":
-    #                     data.email,
+                    "Email":
+                        data.email,
 
-    #                 "DOB":
-    #                     formatted_dob,
+                    "DOB":
+                        formatted_dob,
 
-    #                 "Gender":
-    #                     data.gender,
+                    "Gender":
+                        data.gender,
 
-    #                 "Profession":
-    #                     data.profession,
+                    "Profession":
+                        data.profession,
 
-    #                 "City":
-    #                     data.city,
+                    "City":
+                        data.city,
 
-    #                 "Country":
-    #                     data.country,
+                    "Country":
+                        data.country,
 
-    #                 "Description":
-    #                     data.story
-    #             }
-    #         ]
-    #     }
+                    "Description":
+                        data.story
+                }
+            ]
+        }
 
-    #     zoho_response = requests.post(
+        zoho_response = requests.post(
 
-    #         "https://www.zohoapis.in/crm/v2/Leads",
+            "https://www.zohoapis.in/crm/v2/Leads",
 
-    #         json=zoho_payload,
+            json=zoho_payload,
 
-    #         headers={
-    #             "Authorization":
-    #                 f"Zoho-oauthtoken {access_token}",
+            headers={
+                "Authorization":
+                    f"Zoho-oauthtoken {access_token}",
 
-    #             "Content-Type":
-    #                 "application/json"
-    #         }
+                "Content-Type":
+                    "application/json"
+            }
 
-    #     )
+        )
 
-    #     # logger.info(f"Zoho CRM Response: {zoho_response.text}")
+        logger.info(f"Zoho CRM Response: {zoho_response.text}")
 
-    #     if zoho_response.status_code not in [200, 201]:
+        if zoho_response.status_code not in [200, 201]:
 
-    #         logger.error(f"Zoho CRM Error: {zoho_response.text}")
+            logger.error(f"Zoho CRM Error: {zoho_response.text}")
 
-    # except Exception as e:
+    except Exception as e:
 
-    #     logger.error(f"Zoho Integration Error: {str(e)}")
+        logger.error(f"Zoho Integration Error: {str(e)}")
 
     return {
         "success": True,
