@@ -375,7 +375,7 @@ async def create_submission(data: SimpleSubmissionCreate):
 
         )
 
-        logger.info(f"AiSensy Response: {aisensy_response.text}")
+        # logger.info(f"AiSensy Response: {aisensy_response.text}")
 
     except Exception as e:
 
@@ -450,7 +450,7 @@ async def create_submission(data: SimpleSubmissionCreate):
 
         )
 
-        logger.info(f"Zoho CRM Response: {zoho_response.text}")
+        # logger.info(f"Zoho CRM Response: {zoho_response.text}")
 
         if zoho_response.status_code not in [200, 201]:
 
