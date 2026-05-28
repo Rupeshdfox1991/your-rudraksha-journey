@@ -143,7 +143,7 @@ def get_zoho_access_token():
 
     token_data = response.json()
 
-    logger.info(f"Zoho Token Response: {token_data}")
+    # logger.info(f"Zoho Token Response: {token_data}")
 
     if "access_token" not in token_data:
         raise Exception(f"Unable to generate Zoho access token: {token_data}")
@@ -233,7 +233,7 @@ async def create_submission(data: SimpleSubmissionCreate):
     doc = {
         "id": str(uuid.uuid4()),
         "name": data.fullName,
-        "phone": f"{data.countryCode} {data.phoneNumber}",
+        "phone": f"{data.countryCode}{data.phoneNumber}",
         "email": data.email,
         "dob": data.dateOfBirth,
         "gender": data.gender,
@@ -242,7 +242,10 @@ async def create_submission(data: SimpleSubmissionCreate):
         "country": data.country,
         "country_code": data.countryCode,
         "profession": data.profession,
-        "primary_goal": data.primaryGoal or (data.goals[0] if data.goals else ""),
+        "primary_goal": (
+            data.primaryGoal
+            or (data.goals[0] if data.goals else "")
+        ),
         "goals": data.goals,
         "story": data.story or data.mainChallenge,
         "submitted_at": datetime.now(timezone.utc).isoformat(),
@@ -255,11 +258,6 @@ async def create_submission(data: SimpleSubmissionCreate):
     # AISENSY INTEGRATION
     # ==========================================
 
-    # Trigger Campign & Flow based on Time
-    india = pytz.timezone("Asia/Kolkata")
-    now = datetime.now(india)
-
-    current_day = now.weekday()
     # Monday = 0
     # Tuesday = 1
     # Wednesday = 2
@@ -268,54 +266,100 @@ async def create_submission(data: SimpleSubmissionCreate):
     # Saturday = 5
     # Sunday = 6
 
+    india = pytz.timezone("Asia/Kolkata")
+    now = datetime.now(india)
+
+    current_day = now.weekday()
     current_hour = now.hour
 
-        # Decide campaign name
-    if current_day == 6:
-            # Sunday
-              print("Running: Sunday Flow")
+    campaign_name = ""
+    
 
-              campaign_name = "Final EP 2.0 After Hours & Sunday Flow"
+    # ==========================================
+    # BUSINESS HOURS FLOW
+    # ==========================================
+    if current_day != 6 and 10 <= current_hour < 18:
 
+        campaign_name = "Final EP 2.0 Business Hours Flow"
+
+    # ==========================================
+    # SATURDAY AFTER HOURS FLOW
+    # ==========================================
     elif current_day == 5 and current_hour >= 18:
-            # Saturday after 6 PM
-            campaign_name = "Final EP 2.0 After Hours SATURDAY Flow"
 
-    elif 10 <= current_hour < 18:
-            # Monday-Saturday business hours
-            campaign_name = "Final EP 2.0 Business Hours Flow"
+        campaign_name = "Final EP 2.0 After Hours SATURDAY Flow"
+        
 
+    # ==========================================
+    # SUNDAY FLOW
+    # ==========================================
+    elif current_day == 6:
+
+        campaign_name = "Final EP 2.0 After Hours & Sunday Flow"
+        
+
+    # ==========================================
+    # MONDAY-FRIDAY AFTER HOURS FLOW
+    # ==========================================
     else:
-            # Monday-Friday after hours
 
-            campaign_name = "Final EP 2.0 After Hours & Sunday Flow"
+        campaign_name = "Final EP 2.0 After Hours & Sunday Flow"
+        
 
+    # ==========================================
+    # FORMAT PHONE
+    # ==========================================
+    phone = ''.join(filter(str.isdigit, data.phoneNumber))
 
-       # end Trigger Campign & Flow based on Time
+    # Remove leading 0 from local number
+    if phone.startswith("0"):
+        phone = phone[1:]
 
+    country_code = (
+        data.countryCode
+        .replace(" ", "")
+        .replace("CA", "")
+        .strip()
+    )
+
+    # Ensure + exists
+    if not country_code.startswith("+"):
+        country_code = "+" + country_code.replace("+", "")
+
+    destination = f"{country_code}{phone}"
+
+    # ==========================================
+    # SAVE SCHEDULE INFO IN DB
+    # ==========================================
+    scheduled_at = now + timedelta(minutes=5)
+    # await db.form_submissions.update_one(
+    #     {"id": doc["id"]},
+    #     {
+    #         "$set": {
+    #             "destination": destination,
+    #             "flow_type": "saturday",
+    #             # "scheduled_at": (
+    #             #     scheduled_at.isoformat()
+    #             #     if scheduled_at
+    #             #     else None
+    #             # ),
+    #             "scheduled_at": scheduled_at,
+    #             "whatsapp_sent": False
+    #         }
+    #     }
+    # )
+
+    # ==========================================
+    # AISENSY API CALL
+    # ==========================================
     try:
-
-        phone = ''.join(filter(str.isdigit, data.phoneNumber))
-
-        # Remove leading 0 from local number
-        if phone.startswith("0"):
-            phone = phone[1:]
-
-        country_code = data.countryCode.replace(" ", "").replace("CA", "").strip()
-
-        # Ensure + exists
-        if not country_code.startswith("+"):
-            country_code = "+" + country_code.replace("+", "")
-
-        destination = f"{country_code}{phone}"
-
-
 
         aisensy_payload = {
 
             "apiKey": os.environ.get("AISENSY_API_KEY"),
 
             "campaignName": campaign_name,
+            # "campaignName": "Final EP 2.0 After Hours SATURDAY Flow",
 
             "destination": destination,
 
@@ -324,7 +368,6 @@ async def create_submission(data: SimpleSubmissionCreate):
             "templateParams": [
                 data.fullName
             ],
-
 
             "attributes": {
 
@@ -345,34 +388,18 @@ async def create_submission(data: SimpleSubmissionCreate):
                 "Country": data.country,
 
                 "Purpose": data.story
-
-            },
-
-            
-            # "media": {
-
-            #     "url":
-            #         "https://rudralife.com/rudraksha-recommendation/images/chennai-exhibition-ai-sensy.jpeg",
-
-            #     "filename":
-            #         "chennai-exhibition-ai-sensy.jpeg"
-
-            # }
-
+            }
         }
 
         aisensy_response = requests.post(
-
             "https://backend.aisensy.com/campaign/t1/api/v2",
-
             json=aisensy_payload,
-
             headers={
                 "Content-Type": "application/json",
-                "Authorization":
+                "Authorization": (
                     f"Bearer {os.environ.get('AISENSY_API_KEY')}"
+                )
             }
-
         )
 
         # logger.info(f"AiSensy Response: {aisensy_response.text}")
@@ -384,7 +411,6 @@ async def create_submission(data: SimpleSubmissionCreate):
     # ==========================================
     # ZOHO CRM INTEGRATION
     # ==========================================
-
     try:
 
         access_token = get_zoho_access_token()
@@ -392,7 +418,6 @@ async def create_submission(data: SimpleSubmissionCreate):
         formatted_dob = None
 
         if data.dateOfBirth:
-        
 
             formatted_dob = datetime.strptime(
                 data.dateOfBirth,
@@ -402,13 +427,14 @@ async def create_submission(data: SimpleSubmissionCreate):
         zoho_payload = {
             "data": [
                 {
-                    "Last_Name":
-                        data.fullName,
+                    "Last_Name": data.fullName,
 
-                    "Lead_Source": "Rudraksha Recommendation",    
+                    "Lead_Source":
+                        "Rudraksha Recommendation",
 
                     "Mobile":
-                        f"{data.countryCode.replace('+', '')}{data.phoneNumber.replace(' ', '')}",
+                        f"{data.countryCode.replace('+', '')}"
+                        f"{data.phoneNumber.replace(' ', '')}",
 
                     "Email":
                         data.email,
@@ -435,11 +461,8 @@ async def create_submission(data: SimpleSubmissionCreate):
         }
 
         zoho_response = requests.post(
-
             "https://www.zohoapis.in/crm/v2/Leads",
-
             json=zoho_payload,
-
             headers={
                 "Authorization":
                     f"Zoho-oauthtoken {access_token}",
@@ -447,14 +470,15 @@ async def create_submission(data: SimpleSubmissionCreate):
                 "Content-Type":
                     "application/json"
             }
-
         )
 
         # logger.info(f"Zoho CRM Response: {zoho_response.text}")
 
         if zoho_response.status_code not in [200, 201]:
 
-            logger.error(f"Zoho CRM Error: {zoho_response.text}")
+            logger.error(
+                f"Zoho CRM Error: {zoho_response.text}"
+            )
 
     except Exception as e:
 
@@ -464,6 +488,126 @@ async def create_submission(data: SimpleSubmissionCreate):
         "success": True,
         "submission_id": doc["id"]
     }
+
+
+@api_router.post("/schedule-message")
+async def schedule_message(data: dict):
+
+    india = pytz.timezone("Asia/Kolkata")
+
+    now = datetime.now(india)
+
+    current_day = now.weekday()
+
+    current_hour = now.hour
+
+    flow_type = ""
+    scheduled_at = None
+
+    # ==========================================
+    # SATURDAY FLOW
+    # ==========================================
+
+    if current_day == 5 and current_hour >= 18:
+
+        flow_type = "saturday"
+
+        # Monday 9:45 AM
+        scheduled_at = now + timedelta(days=2)
+
+        scheduled_at = scheduled_at.replace(
+            hour=9,
+            minute=45,
+            second=0,
+            microsecond=0
+        )
+
+    # ==========================================
+    # SUNDAY FLOW
+    # ==========================================
+
+    elif current_day == 6:
+
+        flow_type = "after_hours"
+
+        # Monday 9:45 AM
+        scheduled_at = now + timedelta(days=1)
+
+        scheduled_at = scheduled_at.replace(
+            hour=9,
+            minute=45,
+            second=0,
+            microsecond=0
+        )
+
+    # ==========================================
+    # MONDAY-FRIDAY AFTER HOURS
+    # ==========================================
+
+    else:
+
+        flow_type = "after_hours"
+
+        # After 6 PM → Next day
+        if current_hour >= 18:
+
+            scheduled_at = now + timedelta(days=1)
+
+        else:
+
+            # Before 9:45 AM → today
+            if current_hour < 9 or (
+                current_hour == 9 and now.minute < 45
+            ):
+
+                scheduled_at = now
+
+            else:
+
+                scheduled_at = now + timedelta(days=1)
+
+        scheduled_at = scheduled_at.replace(
+            hour=9,
+            minute=45,
+            second=0,
+            microsecond=0
+        )
+
+    # ==========================================
+    # TESTING PURPOSE
+    # COMMENT THIS IN PRODUCTION
+    # ==========================================
+
+    scheduled_at = now + timedelta(minutes=5)
+
+    # ==========================================
+    # UPDATE USER
+    # ==========================================
+
+    await db.form_submissions.update_one(
+
+        {
+            "phone": data["phone"]
+        },
+
+        {
+            "$set": {
+
+                "scheduled_at": scheduled_at,
+
+                "whatsapp_sent": False,
+
+                "flow_type": flow_type
+            }
+        }
+
+    )
+
+    return {
+        "success": True
+    }
+
+
 
 @api_router.get("/form/result/{submission_id}")
 async def get_result(submission_id: str):
