@@ -85,7 +85,7 @@ async def send_messages():
 
                 "campaignName": campaign_name,
 
-                "destination": user["destination"],
+                "destination": user["phone"],
 
                 "userName": user["name"],
 
