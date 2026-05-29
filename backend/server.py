@@ -578,7 +578,7 @@ async def schedule_message(data: dict):
     # COMMENT THIS IN PRODUCTION
     # ==========================================
 
-    scheduled_at = now + timedelta(minutes=5)
+    #scheduled_at = now + timedelta(minutes=5)
 
     # ==========================================
     # UPDATE USER
