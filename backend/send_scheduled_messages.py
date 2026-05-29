@@ -69,7 +69,7 @@ async def send_messages():
 
             if user.get("flow_type") == "saturday":
 
-                campaign_name = "Final EP 2.0 After Hours SATURDAY Flow"
+                campaign_name = "Saturday Final Message"
 
             else:
 
