@@ -373,9 +373,9 @@ async def create_submission(data: SimpleSubmissionCreate):
 
                 "name": data.fullName,
 
-                "phone": destination,
+                #"phone": destination,
 
-                "userphone": "TEST123",
+                "userphone": destination,
 
                 "email": data.email,
 
