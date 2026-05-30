@@ -494,6 +494,7 @@ async def create_submission(data: SimpleSubmissionCreate):
 
 @api_router.post("/schedule-message")
 async def schedule_message(data: dict):
+    print("PAYLOAD:", data)  # add this line
 
     india = pytz.timezone("Asia/Kolkata")
 
