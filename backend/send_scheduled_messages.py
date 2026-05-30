@@ -135,7 +135,7 @@ async def send_messages():
 
             )
 
-            print(f"Sent to {user['destination']}")
+            print(f"Sent to {user['phone']}")
 
         except Exception as e:
 
