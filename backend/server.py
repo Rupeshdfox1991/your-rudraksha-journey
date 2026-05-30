@@ -375,7 +375,7 @@ async def create_submission(data: SimpleSubmissionCreate):
 
                 "phone": destination,
 
-                "userphone": destination,
+                "userphone": "TEST123",
 
                 "email": data.email,
 
